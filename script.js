@@ -246,7 +246,7 @@ function fetchTasks() {
     const user = firebase.auth().currentUser; // Get logged-in user
     if (!user) return alert("Please log in to view tasks.");
 
-    fetch(`https://test-guv3.onrender.com/tasks?userId = ${user.uid}`)
+    fetch(`https://test-guv3.onrender.com/tasks?userId=${user.uid}`)
         .then(response => response.json())
         .then(tasks => {
             const taskList = document.getElementById("taskList");
