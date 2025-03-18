@@ -3,6 +3,14 @@
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+// import { signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCRa6In3qCGRnw082rKSVLg6cxRa9eJZIc",
@@ -14,28 +22,42 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-//const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 //const auth = firebase.auth();
 
-firebase.initializeApp(firebaseConfig);
+//firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
+// const auth = firebase.auth();
+//const aut = getAuth(app);
+const auth = getAuth(app);
 
 // Signup function
-function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// function signup() {
+//   const email = document.getElementById("email").value;
+//   const password = document.getElementById("password").value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      alert("Signup Successful!");
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
+//   auth.createUserWithEmailAndPassword(email, password)
+//     .then((userCredential) => {
+//       alert("Signup Successful!");
+//     })
+//     .catch((error) => {
+//       alert(error.message);
+//     });
+// }
 
+window.signup = function () {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            alert("Signup Successful!");
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+    }
 // function signup() {
 //   const email = document.getElementById("email").value;
 //   const password = document.getElementById("password").value;
@@ -64,20 +86,20 @@ function signup() {
 //     });
 // }
 
-function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+// function login() {
+//     const email = document.getElementById("email").value;
+//     const password = document.getElementById("password").value;
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            alert("Login Successful!");
-            console.log("User logged in:", userCredential.user);
-        })
-        .catch((error) => {
-            alert(error.message);
-            console.error("Login error:", error.message);
-        });
-}
+//     auth.signInWithEmailAndPassword(email, password)
+//         .then((userCredential) => {
+//             alert("Login Successful!");
+//             console.log("User logged in:", userCredential.user);
+//         })
+//         .catch((error) => {
+//             alert(error.message);
+//             console.error("Login error:", error.message);
+//         });
+// }
 
 
 // // Logout function
@@ -91,17 +113,69 @@ function login() {
 //     });
 // }
 
-function logout() {
-    auth.signOut()
-        .then(() => {
-            alert("Logged out successfully!");
-            console.log("User logged out");
+// function login() {
+//     const email = document.getElementById("email").value;
+//     const password = document.getElementById("password").value;
+
+//     signInWithEmailAndPassword(auth, email, password)
+//         .then((userCredential) => {
+//             alert("Login Successful!");
+//             console.log("User:", userCredential.user);
+//         })
+//         .catch((error) => {
+//             alert(error.message);
+//         });
+// }
+
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log("Login Successful:", userCredential.user);
+            alert("Login Successful!");
         })
         .catch((error) => {
+            console.error("Error logging in:", error.message);
             alert(error.message);
-            console.error("Logout error:", error.message);
         });
 }
+window.login = login;
+
+// function logout() {
+//     auth.signOut()
+//         .then(() => {
+//             alert("Logged out successfully!");
+//             console.log("User logged out");
+//         })
+//         .catch((error) => {
+//             alert(error.message);
+//             console.error("Logout error:", error.message);
+//         });
+// }
+
+// function logout() {
+//     auth.signOut().then(() => {
+//         alert("Logged out successfully!");
+//         window.location.href = "index.html"; // Redirect to login page
+//     }).catch((error) => {
+//         alert("Error logging out: " + error.message);
+//     });
+// }
+
+const aut = getAuth();
+window.logout = function () {
+    signOut(aut)
+        .then(() => {
+            alert("Logout successful!");
+            window.location.href = "index.html"; // Redirect after logout (optional)
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+            alert("Failed to log out!");
+        });
+};
 
 auth.onAuthStateChanged((user) => {
     if (user) {
@@ -113,26 +187,57 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
+const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 
-function addTask() {
+// ✅ Define the addTask function
+window.addTask = function () {
     const taskInput = document.getElementById("taskInput");
     const taskText = taskInput.value.trim();
 
-    if (taskText === "") return; // Prevent empty tasks
+    if (taskText === "") {
+        alert("Please enter a task!");
+        return;
+    }
 
-    fetch("https://test-guv3.onrender.com/tasks", { // Your backend URL
+    fetch("https://test-guv3.onrender.com/tasks", { // Replace with your actual backend URL
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: taskText })
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: taskText }),
     })
     .then(response => response.json())
     .then(data => {
         console.log("Task added:", data);
-        taskInput.value = ""; // Clear input
-        fetchTasks(); // Reload tasks
+        taskInput.value = "";
+        fetchTasks(); // Refresh task list
     })
-    .catch(error => console.error("Error adding task:", error));
-}
+    .catch(error => {
+        console.error("Error adding task:", error);
+        alert("Failed to add task!");
+    });
+};
+
+
+// function addTask() {
+//     const taskInput = document.getElementById("taskInput");
+//     const taskText = taskInput.value.trim();
+
+//     if (taskText === "") return; // Prevent empty tasks
+
+//     fetch("https://test-guv3.onrender.com/tasks", { // Your backend URL
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ text: taskText })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log("Task added:", data);
+//         taskInput.value = ""; // Clear input
+//         fetchTasks(); // Reload tasks
+//     })
+//     .catch(error => console.error("Error adding task:", error));
+// }
 
 // async function addTask() {
 //     const taskInput = document.getElementById("taskInput").value;
@@ -185,28 +290,28 @@ function addTask() {
 //     .catch(error => console.error("Error adding task:", error));
 // }
 
-function addTask() {
-    const taskText = document.getElementById("taskInput").value;
-    const user = firebase.auth().currentUser; // Get logged-in user
+// function addTask() {
+//     const taskText = document.getElementById("taskInput").value;
+//     const user = firebase.auth().currentUser; // Get logged-in user
 
-    if (!user) return alert("Please log in to add tasks.");
-    if (!taskText) return alert("Task cannot be empty.");
+//     if (!user) return alert("Please log in to add tasks.");
+//     if (!taskText) return alert("Task cannot be empty.");
 
-    fetch("https://test-guv3.onrender.com/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: taskText, userId: user.uid })
-    })
-    .then(response => response.json())
-    .then(() => {
-        document.getElementById("taskInput").value = "";
-        fetchTasks(); // Refresh task list
-    })
-    .catch(error => console.error("Error adding task:", error));
-}
+//     fetch("https://test-guv3.onrender.com/tasks", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ text: taskText, userId: user.uid })
+//     })
+//     .then(response => response.json())
+//     .then(() => {
+//         document.getElementById("taskInput").value = "";
+//         fetchTasks(); // Refresh task list
+//     })
+//     .catch(error => console.error("Error adding task:", error));
+// }
 
 
-const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
+// const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 
 // async function fetchTasks() {
 //     try {
@@ -281,6 +386,23 @@ function fetchTasks() {
         .catch(error => console.error("Error fetching tasks:", error));
 }
 
+// async function fetchTasks() {
+//   const user = auth.currentUser;
+//   if (!user) return;
+
+//   const token = await user.getIdToken();
+  
+//   fetch("https://test-guv3.onrender.com/tasks", {
+//     method: "GET",
+//     headers: { Authorization: token },
+//   })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       console.log(data);
+//       // Display tasks on the page
+//     })
+//     .catch((error) => console.error("Error fetching tasks:", error));
+// }
 
 
 async function deleteTask(taskId) {
@@ -303,3 +425,36 @@ async function deleteTask(taskId) {
 window.onload = fetchTasks; // Load tasks when page loads
 
 
+// // Login Function
+// function login() {
+//     const email = document.getElementById("email").value;
+//     const password = document.getElementById("password").value;
+
+//     signInWithEmailAndPassword(auth, email, password)
+//         .then((userCredential) => {
+//             alert("Login Successful!");
+//             console.log("User:", userCredential.user);
+//         })
+//         .catch((error) => {
+//             alert(error.message);
+//         });
+// }
+
+// Logout Function
+// function logout() {
+//     signOut(auth)
+//         .then(() => {
+//             alert("Logged out successfully!");
+//         })
+//         .catch((error) => {
+//             alert(error.message);
+//         });
+// }
+// function logout() {
+//     auth.signOut().then(() => {
+//         alert("Logged out successfully!");
+//         window.location.href = "index.html"; // Redirect to login page
+//     }).catch((error) => {
+//         alert("Error logging out: " + error.message);
+//     });
+// }
