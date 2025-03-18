@@ -283,22 +283,22 @@ function fetchTasks() {
 
 
 
-async function deleteTask(taskId) {
-    try {
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {  
-            method: "DELETE",
-        });
+// async function deleteTask(taskId) {
+//     try {
+//         const response = await fetch(`${API_URL}/tasks/${taskId}`, {  
+//             method: "DELETE",
+//         });
 
-        if (!response.ok) {
-            throw new Error("Failed to delete task");
-        }
+//         if (!response.ok) {
+//             throw new Error("Failed to delete task");
+//         }
 
-        console.log("Task deleted successfully");
-        fetchTasks(); // Refresh the list after deleting
-    } catch (error) {
-        console.error("Error deleting task:", error);
-    }
-}
+//         console.log("Task deleted successfully");
+//         fetchTasks(); // Refresh the list after deleting
+//     } catch (error) {
+//         console.error("Error deleting task:", error);
+//     }
+// }
 
 window.onload = fetchTasks; // Load tasks when page loads
 
