@@ -1,28 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>To-Do List</h1>
-    <input type="text" id="taskInput" placeholder="Enter a task">
-    <button onclick="addTask()">Add Task</button>
-    <div id="auth-container">
-        <input type="email" id="email" placeholder="Enter Email">
-        <input type="password" id="password" placeholder="Enter Password">
-        <button onclick="signup()">Sign Up</button>
-        <button onclick="login()">Login</button>
-        <button onclick="logout()">Logout</button>
-    </div>
-    <ul id="taskList"></ul>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="script.js"></script>
-</body>
-</html> -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +10,6 @@
 
 </head>
 <body>
-
-    <h2>Firebase Authentication</h2>
     <input type="email" id="email" placeholder="Enter Email">
     <input type="password" id="password" placeholder="Enter Password">
     <button onclick="signup()">Sign Up</button>
@@ -45,8 +19,13 @@
     <!-- Logout -->
     <button onclick="logout()">Logout</button>
     <ul id="taskList"></ul>
-
     <p id="user-info">Not logged in</p>
+
+    <h1>To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add Task</button>
+
+    
 
     <!-- ✅ Load Firebase SDK from CDN -->
     <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>

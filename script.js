@@ -242,21 +242,45 @@ const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 //         .catch(error => console.error("Error fetching tasks:", error));
 // }
 
-function fetchTasks() {
-    const user = firebase.auth().currentUser; // Get logged-in user
-    if (!user) return alert("Please log in to view tasks.");
+// function fetchTasks() {
+//     const user = firebase.auth().currentUser; // Get logged-in user
+//     if (!user) return alert("Please log in to view tasks.");
 
-    fetch(`https://test-guv3.onrender.com/tasks?userId=${user.uid}`)
+//     fetch(`https://test-guv3.onrender.com/tasks?userId=${user.uid}`)
+//         .then(response => response.json())
+//         .then(tasks => {
+//             const taskList = document.getElementById("taskList");
+//             taskList.innerHTML = "";
+//             tasks.forEach(task => {
+//                 taskList.innerHTML += `<li>${task.text}</li>`;
+//             });
+//         })
+//         .catch(error => console.error("Error fetching tasks:", error));
+// }
+
+function fetchTasks() {
+    fetch("https://test-guv3.onrender.com/tasks")
         .then(response => response.json())
         .then(tasks => {
-            const taskList = document.getElementById("taskList");
-            taskList.innerHTML = "";
+            const taskList = document.getElementById("task-list");
+            taskList.innerHTML = ""; // Clear existing tasks
+
             tasks.forEach(task => {
-                taskList.innerHTML += `<li>${task.text}</li>`;
+                const li = document.createElement("li");
+                li.textContent = task.text;
+
+                // Add Delete Button
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = () => deleteTask(task._id);
+                li.appendChild(deleteButton);
+
+                taskList.appendChild(li);
             });
         })
         .catch(error => console.error("Error fetching tasks:", error));
 }
+
 
 
 async function deleteTask(taskId) {
