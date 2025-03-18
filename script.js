@@ -242,21 +242,21 @@ const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 //         .catch(error => console.error("Error fetching tasks:", error));
 // }
 
-// function fetchTasks() {
-//     const user = firebase.auth().currentUser; // Get logged-in user
-//     if (!user) return alert("Please log in to view tasks.");
+function fetchTasks() {
+    const user = firebase.auth().currentUser; // Get logged-in user
+    if (!user) return alert("Please log in to view tasks.");
 
-//     fetch(`https://test-guv3.onrender.com/tasks?userId=${user.uid}`)
-//         .then(response => response.json())
-//         .then(tasks => {
-//             const taskList = document.getElementById("taskList");
-//             taskList.innerHTML = "";
-//             tasks.forEach(task => {
-//                 taskList.innerHTML += `<li>${task.text}</li>`;
-//             });
-//         })
-//         .catch(error => console.error("Error fetching tasks:", error));
-// }
+    fetch(`https://test-guv3.onrender.com/tasks?userId=${user.uid}`)
+        .then(response => response.json())
+        .then(tasks => {
+            const taskList = document.getElementById("taskList");
+            taskList.innerHTML = "";
+            tasks.forEach(task => {
+                taskList.innerHTML += `<li>${task.text}</li>`;
+            });
+        })
+        .catch(error => console.error("Error fetching tasks:", error));
+}
 
 function fetchTasks() {
     fetch("https://test-guv3.onrender.com/tasks")
@@ -283,22 +283,22 @@ function fetchTasks() {
 
 
 
-// async function deleteTask(taskId) {
-//     try {
-//         const response = await fetch(`${API_URL}/tasks/${taskId}`, {  
-//             method: "DELETE",
-//         });
+async function deleteTask(taskId) {
+    try {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {  
+            method: "DELETE",
+        });
 
-//         if (!response.ok) {
-//             throw new Error("Failed to delete task");
-//         }
+        if (!response.ok) {
+            throw new Error("Failed to delete task");
+        }
 
-//         console.log("Task deleted successfully");
-//         fetchTasks(); // Refresh the list after deleting
-//     } catch (error) {
-//         console.error("Error deleting task:", error);
-//     }
-// }
+        console.log("Task deleted successfully");
+        fetchTasks(); // Refresh the list after deleting
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}
 
 window.onload = fetchTasks; // Load tasks when page loads
 
