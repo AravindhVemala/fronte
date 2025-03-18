@@ -44,6 +44,26 @@
 //     });
 // }
 
+function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const taskText = taskInput.value.trim();
+
+    if (taskText === "") return; // Prevent empty tasks
+
+    fetch("https://test-guv3.onrender.com/tasks", { // Your backend URL
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: taskText })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Task added:", data);
+        taskInput.value = ""; // Clear input
+        fetchTasks(); // Reload tasks
+    })
+    .catch(error => console.error("Error adding task:", error));
+}
+
 async function addTask() {
     const taskInput = document.getElementById("taskInput").value;
 
