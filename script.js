@@ -284,36 +284,100 @@ auth.onAuthStateChanged((user) => {
 
 const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 
-
-
-// ✅ Define the addTask function
-window.addTask = function () {
-    const taskInput = document.getElementById("taskInput");
-    const taskText = taskInput.value.trim();
-
-    if (taskText === "") {
-        alert("Please enter a task!");
+async function fetchTasks() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.log("No user logged in.");
         return;
     }
 
-    fetch("https://test-guv3.onrender.com/tasks", { // Replace with your actual backend URL
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: taskText }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Task added:", data);
-        taskInput.value = "";
-        fetchTasks(); // Refresh task list
-    })
-    .catch(error => {
+    const token = await user.getIdToken();  // Get the user’s Firebase token
+
+    try {
+        const response = await fetch("https://test-guv3.onrender.com/tasks", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const tasks = await response.json();
+        const taskList = document.getElementById("taskList");
+        taskList.innerHTML = "";  // Clear previous tasks
+
+        tasks.forEach(task => {
+            const li = document.createElement("li");
+            li.textContent = task.text;
+
+            // Delete Button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.onclick = async function () {
+                await deleteTask(task._id);
+            };
+
+            li.appendChild(deleteButton);
+            taskList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+    }
+}
+
+async function addTask() {
+    const user = auth.currentUser;
+    if (!user) {
+        alert("Please log in to add tasks.");
+        return;
+    }
+
+    const token = await user.getIdToken();
+    const taskInput = document.getElementById("taskInput").value;
+
+    try {
+        await fetch("https://test-guv3.onrender.com/tasks", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ text: taskInput })
+        });
+
+        fetchTasks(); // Refresh the task list
+    } catch (error) {
         console.error("Error adding task:", error);
-        alert("Failed to add task!");
-    });
-};
+    }
+}
+
+
+// ✅ Define the addTask function
+// window.addTask = function () {
+//     const taskInput = document.getElementById("taskInput");
+//     const taskText = taskInput.value.trim();
+
+//     if (taskText === "") {
+//         alert("Please enter a task!");
+//         return;
+//     }
+
+//     fetch("https://test-guv3.onrender.com/tasks", { // Replace with your actual backend URL
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ text: taskText }),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log("Task added:", data);
+//         taskInput.value = "";
+//         fetchTasks(); // Refresh task list
+//     })
+//     .catch(error => {
+//         console.error("Error adding task:", error);
+//         alert("Failed to add task!");
+//     });
+// };
 
 // function addTask() {
 //     const user = auth.currentUser;
@@ -711,52 +775,52 @@ window.addTask = function () {
 //     }
 // }
 
-async function fetchTasks() {
-    const user = auth.currentUser;
-    if (!user) {
-        console.log("No user logged in.");
-        return;
-    }
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
 
-    try {
-        const token = await user.getIdToken();  // Get user's auth token
-        // console.log("User Token:", token); // Debugging
+//     try {
+//         const token = await user.getIdToken();  // Get user's auth token
+//         // console.log("User Token:", token); // Debugging
 
-        const response = await fetch("https://test-guv3.onrender.com/tasks", {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+//         const response = await fetch("https://test-guv3.onrender.com/tasks", {
+//             headers: { "Authorization": `Bearer ${token}` }
+//         });
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch tasks");
-        }
+//         if (!response.ok) {
+//             throw new Error("Failed to fetch tasks");
+//         }
 
-        const tasks = await response.json();
-        console.log("Fetched Tasks:", tasks); // Debugging
+//         const tasks = await response.json();
+//         console.log("Fetched Tasks:", tasks); // Debugging
 
-        const taskList = document.getElementById("taskList");
-        if (!taskList) return;
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
 
-        taskList.innerHTML = ""; // Clear previous tasks
+//         taskList.innerHTML = ""; // Clear previous tasks
 
-        tasks.forEach(task => {
-            const li = document.createElement("li");
-            li.textContent = task.text;
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
 
-            // Create delete button
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Delete";
-            deleteButton.onclick = async function () {
-                await deleteTask(task._id);
-                fetchTasks(); // Refresh tasks after delete
-            };
+//             // Create delete button
+//             const deleteButton = document.createElement("button");
+//             deleteButton.textContent = "Delete";
+//             deleteButton.onclick = async function () {
+//                 await deleteTask(task._id);
+//                 fetchTasks(); // Refresh tasks after delete
+//             };
 
-            li.appendChild(deleteButton);
-            taskList.appendChild(li);
-        });
-    } catch (error) {
-        console.error("Error fetching tasks:", error);
-    }
-}
+//             li.appendChild(deleteButton);
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
 
 
 // function fetchTasks() {
