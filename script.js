@@ -228,6 +228,27 @@ window.logout = function () {
         });
 };
 
+window.logout = function () {
+    signOut(auth)
+        .then(() => {
+            alert("Logout successful!");
+
+            // Clear tasks from the UI after logout
+            const taskList = document.getElementById("taskList");
+            if (taskList) {
+                taskList.innerHTML = ""; // Remove all tasks from the screen
+            }
+
+            // Reload the page to reset state
+            location.reload();
+        })
+        .catch((error) => {
+            console.error("Logout error:", error);
+            alert("Failed to log out!");
+        });
+};
+
+
 // const aut = getAuth();
 // window.logout = function () {
 //     signOut(aut)
@@ -248,6 +269,16 @@ auth.onAuthStateChanged((user) => {
     } else {
         console.log("No user logged in.");
         document.getElementById("user-info").innerText = "Not logged in";
+    }
+});
+
+// Ensure tasks load after login
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        console.log("User logged in:", user.email);
+        fetchTasks(); // Load tasks for the logged-in user
+    } else {
+        console.log("No user logged in.");
     }
 });
 
