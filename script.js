@@ -272,15 +272,15 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-// Ensure tasks load after login
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        console.log("User logged in:", user.email);
-        fetchTasks(); // Load tasks for the logged-in user
-    } else {
-        console.log("No user logged in.");
-    }
-});
+// // Ensure tasks load after login
+// auth.onAuthStateChanged((user) => {
+//     if (user) {
+//         console.log("User logged in:", user.email);
+//         fetchTasks(); // Load tasks for the logged-in user
+//     } else {
+//         console.log("No user logged in.");
+//     }
+// });
 
 const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 
@@ -458,27 +458,102 @@ window.addTask = function () {
 //         .catch(error => console.error("Error fetching tasks:", error));
 // }
 
-function fetchTasks() {
-    fetch("https://test-guv3.onrender.com/tasks")
-        .then(response => response.json())
-        .then(tasks => {
-            const taskList = document.getElementById("taskList");
-            taskList.innerHTML = ""; // Clear existing tasks
+// function fetchTasks() {
+//     fetch("https://test-guv3.onrender.com/tasks")
+//         .then(response => response.json())
+//         .then(tasks => {
+//             const taskList = document.getElementById("taskList");
+//             taskList.innerHTML = ""; // Clear existing tasks
 
-            tasks.forEach(task => {
-                const li = document.createElement("li");
-                li.textContent = task.text;
+//             tasks.forEach(task => {
+//                 const li = document.createElement("li");
+//                 li.textContent = task.text;
 
-                // Add Delete Button
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "Delete";
-                deleteButton.onclick = () => deleteTask(task._id);
-                li.appendChild(deleteButton);
+//                 // Add Delete Button
+//                 const deleteButton = document.createElement("button");
+//                 deleteButton.textContent = "Delete";
+//                 deleteButton.onclick = () => deleteTask(task._id);
+//                 li.appendChild(deleteButton);
 
-                taskList.appendChild(li);
-            });
-        })
-        .catch(error => console.error("Error fetching tasks:", error));
+//                 taskList.appendChild(li);
+//             });
+//         })
+//         .catch(error => console.error("Error fetching tasks:", error));
+// }
+
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+//             headers: {
+//                 "Authorization": `Bearer ${await user.getIdToken()}`
+//             }
+//         });
+
+//         const tasks = await response.json();
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
+
+//         // // Add Delete Button
+//         // const deleteButton = document.createElement("button");
+//         // deleteButton.textContent = "Delete";
+//         // deleteButton.onclick = () => deleteTask(li);
+//         // li.appendChild(deleteButton);
+
+//         taskList.innerHTML = ""; // Clear old tasks before appending new ones
+
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
+async function fetchTasks() {
+    const user = auth.currentUser;
+    if (!user) {
+        console.log("No user logged in.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+            headers: {
+                "Authorization": `Bearer ${await user.getIdToken()}`
+            }
+        });
+
+        const tasks = await response.json();
+        const taskList = document.getElementById("taskList");
+        if (!taskList) return;
+
+        taskList.innerHTML = ""; // Clear previous tasks
+
+        tasks.forEach(task => {
+            const li = document.createElement("li");
+            li.textContent = task.text;
+
+            // Create delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.onclick = async function () {
+                await deleteTask(task._id);
+            };
+
+            li.appendChild(deleteButton);
+            taskList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+    }
 }
 
 // async function fetchTasks() {
