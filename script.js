@@ -211,7 +211,7 @@ window.logout = function () {
             alert("Logout successful!");
             
             // Clear tasks from the UI after logout
-            const taskList = document.getElementById("task-list");
+            const taskList = document.getElementById("taskList");
             if (taskList) {
                 taskList.innerHTML = ""; // Remove all tasks from the screen
             }
