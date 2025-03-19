@@ -284,6 +284,8 @@ auth.onAuthStateChanged((user) => {
 
 const API_URL = "https://test-guv3.onrender.com"; // Your backend URL
 
+
+
 // ✅ Define the addTask function
 window.addTask = function () {
     const taskInput = document.getElementById("taskInput");
@@ -312,6 +314,26 @@ window.addTask = function () {
         alert("Failed to add task!");
     });
 };
+
+// function addTask() {
+//     const user = auth.currentUser;
+//     if (!user) return;
+
+//     const taskText = document.getElementById("taskInput").value;
+//     user.getIdToken().then((token) => {
+//         fetch(`${backendUrl}/tasks`, {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Authorization": `Bearer ${token}`,
+//             },
+//             body: JSON.stringify({ text: taskText }),
+//         })
+//         .then(response => response.json())
+//         .then(() => fetchTasks())
+//         .catch(error => console.error("Error adding task:", error));
+//     });
+// }
 
 
 // function addTask() {
@@ -517,6 +539,178 @@ window.addTask = function () {
 //     }
 // }
 
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+//             headers: {
+//                 "Authorization": `Bearer ${await user.getIdToken()}`
+//             }
+//         });
+
+//         const tasks = await response.json();
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
+
+//         taskList.innerHTML = ""; // Clear previous tasks
+
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
+
+//             // Create delete button
+//             const deleteButton = document.createElement("button");
+//             deleteButton.textContent = "Delete";
+//             deleteButton.onclick = async function () {
+//                 await deleteTask(task._id);
+//             };
+
+//             li.appendChild(deleteButton);
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
+
+//     try {
+//         const token = await user.getIdToken();
+//         console.log("User Token:", token); // Debug token
+
+//         const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+//             headers: { "Authorization": `Bearer ${token}` }
+//         });
+
+//         const tasks = await response.json();
+//         console.log("Fetched Tasks:", tasks); // Debug response
+
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
+
+//         taskList.innerHTML = ""; // Clear previous tasks
+
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
+
+//             // Create delete button
+//             const deleteButton = document.createElement("button");
+//             deleteButton.textContent = "Delete";
+//             deleteButton.onclick = async function () {
+//                 await deleteTask(task._id);
+//                 fetchTasks(); // Refresh tasks after delete
+//             };
+
+//             li.appendChild(deleteButton);
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
+
+//     try {
+//         const token = await user.getIdToken();
+//         console.log("User Token:", token); // Debugging purpose
+
+//         const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+//             headers: { "Authorization": `Bearer ${token}` }
+//         });
+
+//         const tasks = await response.json();
+//         console.log("Fetched Tasks:", tasks); // Debugging purpose
+
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
+
+//         taskList.innerHTML = ""; // Clear previous tasks
+
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
+
+//             // Create delete button
+//             const deleteButton = document.createElement("button");
+//             deleteButton.textContent = "Delete";
+//             deleteButton.onclick = async function () {
+//                 await deleteTask(task._id);
+//                 fetchTasks(); // Refresh tasks after delete
+//             };
+
+//             li.appendChild(deleteButton);
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
+// async function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         console.log("No user logged in.");
+//         return;
+//     }
+
+//     try {
+//         const token = await user.getIdToken();  // Get user's auth token
+//         console.log("User Token:", token); // Debugging purpose
+
+//         const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
+//             headers: { "Authorization": `Bearer ${token}` }
+//         });
+
+//         if (!response.ok) {
+//             throw new Error("Failed to fetch tasks");
+//         }
+
+//         const tasks = await response.json();
+//         console.log("Fetched Tasks:", tasks); // Debugging purpose
+
+//         const taskList = document.getElementById("taskList");
+//         if (!taskList) return;
+
+//         taskList.innerHTML = ""; // Clear previous tasks
+
+//         tasks.forEach(task => {
+//             const li = document.createElement("li");
+//             li.textContent = task.text;
+
+//             // Create delete button
+//             const deleteButton = document.createElement("button");
+//             deleteButton.textContent = "Delete";
+//             deleteButton.onclick = async function () {
+//                 await deleteTask(task._id);
+//                 fetchTasks(); // Refresh tasks after delete
+//             };
+
+//             li.appendChild(deleteButton);
+//             taskList.appendChild(li);
+//         });
+//     } catch (error) {
+//         console.error("Error fetching tasks:", error);
+//     }
+// }
+
 async function fetchTasks() {
     const user = auth.currentUser;
     if (!user) {
@@ -525,13 +719,20 @@ async function fetchTasks() {
     }
 
     try {
-        const response = await fetch(`https://test-guv3.onrender.com/tasks`, {
-            headers: {
-                "Authorization": `Bearer ${await user.getIdToken()}`
-            }
+        const token = await user.getIdToken();  // Get user's auth token
+        // console.log("User Token:", token); // Debugging
+
+        const response = await fetch("https://test-guv3.onrender.com/tasks", {
+            headers: { "Authorization": `Bearer ${token}` }
         });
 
+        if (!response.ok) {
+            throw new Error("Failed to fetch tasks");
+        }
+
         const tasks = await response.json();
+        console.log("Fetched Tasks:", tasks); // Debugging
+
         const taskList = document.getElementById("taskList");
         if (!taskList) return;
 
@@ -546,6 +747,7 @@ async function fetchTasks() {
             deleteButton.textContent = "Delete";
             deleteButton.onclick = async function () {
                 await deleteTask(task._id);
+                fetchTasks(); // Refresh tasks after delete
             };
 
             li.appendChild(deleteButton);
@@ -555,6 +757,27 @@ async function fetchTasks() {
         console.error("Error fetching tasks:", error);
     }
 }
+
+
+// function fetchTasks() {
+//     const user = auth.currentUser;
+//     if (!user) return;
+
+//     user.getIdToken().then((token) => {
+//         fetch(`${backendUrl}/tasks`, {
+//             method: "GET",
+//             headers: { "Authorization": `Bearer ${token}` },
+//         })
+//         .then(response => response.json())
+//         .then(tasks => {
+//             document.getElementById("taskList").innerHTML = tasks
+//                 .map(task => `<li>${task.text} <button onclick="deleteTask('${task._id}')">Delete</button></li>`)
+//                 .join("");
+//         })
+//         .catch(error => console.error("Error fetching tasks:", error));
+//     });
+// }
+
 
 // async function fetchTasks() {
 //   const user = auth.currentUser;
