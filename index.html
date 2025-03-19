@@ -12,13 +12,14 @@
 <body>
     <input type="email" id="email" placeholder="Enter Email">
     <input type="password" id="password" placeholder="Enter Password">
-    
+    <!-- <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Password"> -->
     <button onclick="signup()">Sign Up</button>
     <!-- Login -->
     <button onclick="login()">Login</button>
 
     
-
+<!-- <button onclick="login()">Login</button> -->
     
 
     <!-- Logout -->
@@ -30,37 +31,24 @@
     <input type="text" id="taskInput" placeholder="Enter a task">
     <button onclick="addTask()">Add Task</button>
 
-  
+    <!-- Login Form -->
+<!-- <input type="email" id="login-email" placeholder="Email">
+<input type="password" id="login-password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<-- Logout Button ->
+<button onclick="logout()">Logout</button> --> 
+
+
+    <!-- ✅ Load Firebase SDK from CDN -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script> -->
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
     <!-- ✅ Load your script AFTER Firebase -->
-    <!-- <script type="module" src="script.js"></script> -->
-     <script type="module" src="script.js"></script>
-    <!-- <script type="module">
-    import { addTask } from "./script.js";
-    window.addTask = addTask;
-    </script> -->
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCRa6In3qCGRnw082rKSVLg6cxRa9eJZIc",
-    authDomain: "testapp-a8a64.firebaseapp.com",
-    projectId: "testapp-a8a64",
-    storageBucket: "testapp-a8a64.firebasestorage.app",
-    messagingSenderId: "223060596409",
-    appId: "1:223060596409:web:f27cd9ff1c593a0f87ed68"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+    <script type="module" src="script.js"></script>
 
 </body>
 </html>
