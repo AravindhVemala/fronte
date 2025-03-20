@@ -323,61 +323,61 @@ async function fetchTasks() {
     }
 }
 
-async function addTask() {
-    const user = auth.currentUser;
-    if (!user) {
-        alert("Please log in to add tasks.");
-        return;
-    }
-
-    const token = await user.getIdToken();
-    const taskInput = document.getElementById("taskInput").value;
-
-    try {
-        await fetch("https://test-guv3.onrender.com/tasks", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ text: taskInput })
-        });
-
-        fetchTasks(); // Refresh the task list
-    } catch (error) {
-        console.error("Error adding task:", error);
-    }
-}
-
-
-// ✅ Define the addTask function
-// window.addTask = function () {
-//     const taskInput = document.getElementById("taskInput");
-//     const taskText = taskInput.value.trim();
-
-//     if (taskText === "") {
-//         alert("Please enter a task!");
+// async function addTask() {
+//     const user = auth.currentUser;
+//     if (!user) {
+//         alert("Please log in to add tasks.");
 //         return;
 //     }
 
-//     fetch("https://test-guv3.onrender.com/tasks", { // Replace with your actual backend URL
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ text: taskText }),
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log("Task added:", data);
-//         taskInput.value = "";
-//         fetchTasks(); // Refresh task list
-//     })
-//     .catch(error => {
+//     const token = await user.getIdToken();
+//     const taskInput = document.getElementById("taskInput").value;
+
+//     try {
+//         await fetch("https://test-guv3.onrender.com/tasks", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Authorization": `Bearer ${token}`
+//             },
+//             body: JSON.stringify({ text: taskInput })
+//         });
+
+//         fetchTasks(); // Refresh the task list
+//     } catch (error) {
 //         console.error("Error adding task:", error);
-//         alert("Failed to add task!");
-//     });
-// };
+//     }
+// }
+
+
+//✅ Define the addTask function
+window.addTask = function () {
+    const taskInput = document.getElementById("taskInput");
+    const taskText = taskInput.value.trim();
+
+    if (taskText === "") {
+        alert("Please enter a task!");
+        return;
+    }
+
+    fetch("https://test-guv3.onrender.com/tasks", { // Replace with your actual backend URL
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: taskText }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Task added:", data);
+        taskInput.value = "";
+        fetchTasks(); // Refresh task list
+    })
+    .catch(error => {
+        console.error("Error adding task:", error);
+        alert("Failed to add task!");
+    });
+};
 
 // function addTask() {
 //     const user = auth.currentUser;
